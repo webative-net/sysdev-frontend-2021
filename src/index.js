@@ -6,8 +6,14 @@ var stations = {
   "Lund": [55.7,13.12],
   "Kiruna": [67.967, 20.309],
 }
-
-function main(data1, data2) {
+/**
+ * Generates the current view's HTML code.
+ * 
+ * @param  {*} [data1] dataset of the first city
+ * @param  {*} [data2] dataset of the second city
+ * @param  {string} [selectedId] focused select box ID
+ */
+function main(data1, data2, selectedId) {
   var $ = document.querySelector.bind(document)
 
   var html = ""
@@ -78,10 +84,17 @@ function main(data1, data2) {
   // I am using a ternary operator and the comma operator here for brevity.
   $("#stat2").value = data1 && data2 ? ($("#stat1").value = data1, data2) : "Umeå"
 
+  if (selectedId) {
+    $(`#${selectedId}`).focus()
+  }
+
   $("#stat1").onchange = onchange
   $("#stat2").onchange = onchange
 
   function onchange() {
+    // get the id of the focused select box
+    const elId = this.id
+
     var stat1 = stations[$("#stat1").value]
     var stat2 = stations[$("#stat2").value]
     
@@ -104,7 +117,7 @@ function main(data1, data2) {
             // alter the returned data to also
             // include the station's name
             data2.station = $("#stat2").value
-            main(data1, data2)
+            main(data1, data2, elId) // pass the id of selected box too
           } else {
             $("#main").innerHTML += 'error!'
           }

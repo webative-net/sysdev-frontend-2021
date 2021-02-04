@@ -33,6 +33,8 @@ updates if functionality is added.
 2. After selecting a city the select menu loses focus. Fix the app so that the
    focus is preserved after new data is presented to the user.
 
+   **I fixed the issue by passing the id of the currently selected item to the main function, in the _onchange_ event and restoring the focus later by using the received id.**
+
 3. Change the plotting code to use a library instead. You can choose whichever
    you like but add it as a dependency to package.json. Adapt the data
    preprocessing code if needed.
