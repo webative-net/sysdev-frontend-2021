@@ -44,6 +44,8 @@ updates if functionality is added.
    data visualisation practices. If you do so, document the shortcomings you
    found with the current plot and motivate your improvements.
 
+   **For plotting the API results, I chose to use a heatmap chart from the [TOAST UI Chart](https://github.com/nhn/tui.chart/blob/main/docs/en/chart-heatmap.md) library. The former implementation was not so appealing and very hard to follow. Besides that, the plotted data was incomplete. There were no station names nor a legend. The library I used is a simple one but efficient. It can be customized as far as it allows us to do so or it can be replaced completely with a more advanced one if needed.**
+
 4. Clean up the rest of the code in this repository, with regards to modern frontend
    development to get it in a shape that you are comfortable with maintaining
    and adding small features to.

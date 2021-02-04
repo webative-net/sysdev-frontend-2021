@@ -1,3 +1,4 @@
+import { HeatmapChart } from "@toast-ui/chart"
 
 var stations = {
   "Uppsala": [59.86, 17.64],
@@ -24,65 +25,81 @@ function main(data1, data2, selectedId) {
   html = "Compare <select id=stat1>" + html + "</select> and <select id=stat2>" + html + "</select>"
   html += "<button id=compare>Compare!</button>"
   html = "<p>" + html + "</p>"
-
-  if (data1 && data2) {
-    // the data objects get altered below, so
-    // we must retain the stations' names now
-    const station1 = data1.station
-    const station2 = data2.station
-
-    data1 = data1.timeSeries
-    data2 = data2.timeSeries
-    var temp1 = []
-    var time1 = []
-    for (var i = 0; i < data1.length; i++) {
-      for (var j = 0; j < data1[i].parameters.length; j++) {
-        if (data1[i].parameters[j].name == "t") {
-          time1.push(data1[i].validTime.slice(0, 16).replace('T', ', '))
-          temp1.push(data1[i].parameters[j].values[0])
-        }
-      }
-    }
-    var temp2 = []
-    var time2 = []
-    for (var i = 0; i < data2.length; i++) {
-      for (var j = 0; j < data2[i].parameters.length; j++) {
-        if (data2[i].parameters[j].name == "t") {
-          time2.push(data2[i].validTime.slice(0, 16).replace('T', ', '))
-          temp2.push(data2[i].parameters[j].values[0])
-        }
-      }
-    }
-
-    var table = ""
-    for (var i = 0; i < temp1.length; i++) {
-
-      var box1 = "<div style='width:" + (temp1[i] + 20) / 60 * 100 + "%; height: 10px; position: relative; background: purple;'>"
-      var box2 = "<div style='width:" + (temp2[i] + 20) / 60 * 100 + "%; height: 10px; position: relative; background: blue;'>"
-
-      box1 += "<div style='position: absolute; left: 100%; bottom: 0; font-size: 11px'>" + temp1[i]
-      box2 += "<div style='position: absolute; left: 100%; bottom: 0; font-size: 11px'>" + temp2[i]
-
-      table += "<tr><td rowspan=2>" + time1[i] + "</td><td>" + box1 + "</td></tr>"
-      table += "<tr><td style='width: 10cm'>" + box2 + "</td></tr>"
-    }
-    table = "<table>" + table + "</table>"
-
-    html += table
-
-    // we don't need the API data anymore at this point.
-    // we can overwrite the data variables with the name
-    // of the stations to persist them outside this block
-    data1 = station1
-    data2 = station2
-  }
+  html += "<div id=chart></div>"
 
   $("#main").innerHTML = html
+
+  if (data1 && data2) {
+    // create an array of tuples of temperatures of both cities.
+    // reduce the data of both cities to two arrays with
+    // the temperatures for each city, next create an array
+    // with tuples of temperatures for the chart.
+    // also create an array of times from the data of the first city.
+
+    const times = []
+    const series1 = data1.timeSeries.reduce((temps, item) => {
+      times.push(item.validTime.slice(0, 16).replace("T", ", "))
+      const newValue = item.parameters.filter((item) => item.name == "t")
+      return [...temps, newValue[0].values[0]]
+    }, [])
+
+    const series2 = data2.timeSeries.reduce((temps, item) => {
+      const newValue = item.parameters.filter((item) => item.name == "t")
+      return [...temps, newValue[0].values[0]]
+    }, [])
+
+    const series = series1.map((element, index) => {
+      return [ element, series2[index] ]
+    })
+
+    // Chart Data
+    const el = $("#chart")
+    const data = {
+      categories: {
+        x: [data1.station, data2.station],
+        y: times,
+      },
+      series: series,
+    }
+    const options = {
+      chart: {
+        title: `Weather Comparison between ${data1.station} and ${data2.station}`,
+        width: 750,
+        height: 2500,
+      },
+      yAxis: {
+        width: 125,
+      },
+      series: {
+        dataLabels: { visible: true },
+      },
+      tooltip: {
+        formatter: (value, tooltipDataInfo) => {
+          const temp = Number(value)
+          let icon = "☀️"
+          if (temp < 0) {
+            icon = "❄️"
+          } else if (temp > 25) {
+            icon = "🔥"
+          }
+
+          return `${icon} ${value} ℃`
+        },
+      },
+      legend: {
+        align: "top",
+        width: 400,
+      },
+    }
+
+    new HeatmapChart({ el, data, options })
+  }
+
   // update the select boxes values.
   // if this is a data view, both select boxes
   // are edited to reflect the compared cities.
   // I am using a ternary operator and the comma operator here for brevity.
-  $("#stat2").value = data1 && data2 ? ($("#stat1").value = data1, data2) : "Umeå"
+  $("#stat2").value = data1 && data2 ? (($("#stat1").value = data1.station), data2.station) : "Umeå"
 
   if (selectedId) {
     $(`#${selectedId}`).focus()
