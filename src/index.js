@@ -20,6 +20,11 @@ function main(data1, data2) {
   html = "<p>" + html + "</p>"
 
   if (data1 && data2) {
+    // the data objects get altered below, so
+    // we must retain the stations' names now
+    const station1 = data1.station
+    const station2 = data2.station
+
     data1 = data1.timeSeries
     data2 = data2.timeSeries
     var temp1 = []
@@ -59,19 +64,27 @@ function main(data1, data2) {
 
     html += table
 
+    // we don't need the API data anymore at this point.
+    // we can overwrite the data variables with the name
+    // of the stations to persist them outside this block
+    data1 = station1
+    data2 = station2
   }
 
   $("#main").innerHTML = html
-  $("#stat2").value = "Umeå"
+  // update the select boxes values.
+  // if this is a data view, both select boxes
+  // are edited to reflect the compared cities.
+  // I am using a ternary operator and the comma operator here for brevity.
+  $("#stat2").value = data1 && data2 ? ($("#stat1").value = data1, data2) : "Umeå"
 
   $("#stat1").onchange = onchange
   $("#stat2").onchange = onchange
 
-  var stat1 = stations[$("#stat1").value]
-  var stat2 = stations[$("#stat2").value]
-
   function onchange() {
-
+    var stat1 = stations[$("#stat1").value]
+    var stat2 = stations[$("#stat2").value]
+    
     var request = new XMLHttpRequest();
     request.open("GET", "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/" + stat1[1] + "/lat/" + stat1[0] + "/data.json", true);
 
@@ -81,10 +94,16 @@ function main(data1, data2) {
         var data1 = JSON.parse(request.responseText);
         request = new XMLHttpRequest();
         request.open("GET", "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/" + stat2[1] + "/lat/" + stat2[0] + "/data.json", true);
+        // alter the returned data to also
+        // include the station's name
+        data1.station = $("#stat1").value
 
         request.onload = function() {
           if (request.status == 200) {
-            var data2 = JSON.parse(request.responseText);
+            var data2 = JSON.parse(request.responseText)
+            // alter the returned data to also
+            // include the station's name
+            data2.station = $("#stat2").value
             main(data1, data2)
           } else {
             $("#main").innerHTML += 'error!'
