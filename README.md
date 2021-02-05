@@ -4,7 +4,7 @@ For position as frontend system developer, UFV-PA 2020/4870
 
 ## Description
 
-Welcome applicant!
+Welcome _Radu Birzu_!
 
 In this repository you will find an unfinished, a little buggy, web app
 that needs to be improved! Its specification is to compare weather
@@ -22,6 +22,8 @@ updates if functionality is added.
 
 0. Update this readme by adding your full name to the first section so that
    you are easy to identify.
+   
+   **Done. Edited the greeting with my name in _italics_.**
 
 1. The app seems to always compare Uppsala and Umeå regardless of what the user
    chooses. Fix the app so that it compares the selected cities.
