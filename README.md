@@ -15,7 +15,7 @@ Docs to the forecast API is at http://opendata.smhi.se/apidocs/metfcst/index.htm
 ### Tasks
 
 All tasks should be done in the form of pull requests towards the repo.
-Use one PR for each numbered task you submit.  You can assume that the PRs will
+Use one PR for each numbered task you submit. You can assume that the PRs will
 be merged as is, so PRs may be based on the final commit of the previous PR.
 The pull requests should include extra files where appropriate and README
 updates if functionality is added.
@@ -27,6 +27,8 @@ updates if functionality is added.
 
 1. The app seems to always compare Uppsala and Umeå regardless of what the user
    chooses. Fix the app so that it compares the selected cities.
+
+   **I found and fixed the bug. The two variables, `stat1` and `stat2`, were supposed to hold the currently selected values from the compare menu. Instead, they were initialized too early. I moved the code to the _onchange_ event function to retain the correct values. I also altered the data returned from the API to also include the name of the cities, which are the select boxes values. The select boxes will reflect the compared cities, upon refresh.**
 
 2. After selecting a city the select menu loses focus. Fix the app so that the
    focus is preserved after new data is presented to the user.
@@ -63,4 +65,3 @@ The page will reload if you make edits.
 
 Builds a static copy of your site to the `build/` folder.
 Your app is ready to be deployed!
-
