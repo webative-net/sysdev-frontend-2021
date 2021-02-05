@@ -1,0 +1,44 @@
+/* First Tailwind parts */
+@tailwind base;
+@tailwind components;
+
+::selection {
+  background: theme('colors.brand');
+  /* WebKit/Blink Browsers */
+}
+
+:root {
+  font-size: 16px;
+}
+
+html {
+  font-family: Helvetica, sans-serif;
+
+  @apply h-full;
+  @apply antialiased;
+  @apply bg-gray-100;
+  @apply text-gray-800;
+}
+
+a {
+  @apply text-purple-500;
+}
+
+h1 {
+  @apply text-3xl;
+  @apply text-gray-700;
+  @apply font-light;
+}
+
+h2 {
+  @apply text-xl;
+  @apply text-gray-600;
+}
+
+h3 {
+  @apply text-gray-600;
+  @apply font-bold;
+}
+
+/* Last Tailwind part */
+@tailwind utilities;

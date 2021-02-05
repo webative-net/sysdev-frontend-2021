@@ -22,7 +22,7 @@ updates if functionality is added.
 
 0. Update this readme by adding your full name to the first section so that
    you are easy to identify.
-   
+
    **Done. Edited the greeting with my name in _italics_.**
 
 1. The app seems to always compare Uppsala and Umeå regardless of what the user
@@ -49,6 +49,19 @@ updates if functionality is added.
 4. Clean up the rest of the code in this repository, with regards to modern frontend
    development to get it in a shape that you are comfortable with maintaining
    and adding small features to.
+
+   **I upgraded the project with the latest technologies in my opinion. These are [Svelte](https://svelte.dev/), [Tailwind](https://tailwindcss.com/), [Babel](https://babeljs.io/), [PostCSS](https://postcss.org/), and others. This way, the repository is more organized (because of Svelte's components). By using Tailwind CSS, a utility-first CSS framework, its classes can be composed to build any design, directly in the markup. Babel ensures future devs will have access to the latest advancements in JavaScript.**
+
+   **What's new:**
+
+   - **Removed 'Compare' button as it was redundant.**
+   - **The selected station from each select box is not available on the other one. In this way, we can avoid having the same station selected in both boxes. The items in each select box are re-built on every change.**
+
+   **Release notes:**
+
+   - **Due to the nature of Tailwind CSS, the starting of the dev server is taking a while. In development mode, Tailwind's build system is not purging the unused atomic classes, which are many. After the project is started, any change will render very fast. This is not the case in production, as Tailwind purges unused classes at build time.**
+   - **Build the project as usual and run `npx serve build` to test the production environment, considering that the `npx` tool is already installed.**
+   - **I developed the project on a Linux platform. I took all the measures to make it work cross-platform in development. In case something is not working when launching the dev server, please use the production build to test it.**
 
 Make sure that the development environment and build script works at each
 pull request.
