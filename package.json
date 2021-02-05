@@ -4,7 +4,9 @@
     "build": "snowpack build",
     "test": "echo \"Tests TODO.\" && exit 1"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@toast-ui/chart": "^4.0.3"
+  },
   "devDependencies": {
     "snowpack": "^3.0.1"
   }
